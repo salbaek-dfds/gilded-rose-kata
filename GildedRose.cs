@@ -36,14 +36,10 @@ namespace csharp
                     if (item.Name == "Conjured Mana Cake") { modifier = 2; }
 
                     if (item.SellIn > 0)
-                    {
                         ModifyItemQuality(item, -1 * modifier);
-                    }
                     
                     if (item.SellIn <= 0)
-                    {
                         ModifyItemQuality(item, -2 * modifier);
-                    }
 
                     item.SellIn = item.SellIn - 1;
                 }
@@ -51,24 +47,16 @@ namespace csharp
                 if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
                     if (item.SellIn > 10)
-                    {
                         ModifyItemQuality(item, 1);
-                    }
 
                     if (item.SellIn > 5 && item.SellIn < 11)
-                    {
                         ModifyItemQuality(item, 2);
-                    }
 
                     if (item.SellIn < 6)
-                    {
                         ModifyItemQuality(item, 3);
-                    }
 
                     if (item.SellIn <= 0)
-                    {
                         ModifyItemQuality(item, -item.Quality);
-                    }
 
                     item.SellIn = item.SellIn - 1;
                 }
