@@ -10,78 +10,67 @@ namespace csharp
             this.Items = Items;
         }
 
+        public void ModifyItemQuality(Item item, int value)
+        {
+            item.Quality = item.Quality + value;
+
+            if (item.Quality > 50)
+            {
+                item.Quality = 50;
+            }
+
+            if (item.Quality < 0)
+            {
+                item.Quality = 0;
+            }
+        }
+
         public void UpdateQuality()
         {
             foreach(Item item in Items)
             {
-                if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
+                if (item.Name != "Backstage passes to a TAFKAL80ETC concert" && item.Name != "Sulfuras, Hand of Ragnaros")
                 {
-                    if (item.Quality > 0)
+                    int modifier = 1;
+                    if (item.Name == "Aged Brie") { modifier = -1; }
+                    if (item.Name == "Conjured Mana Cake") { modifier = 2; }
+
+                    if (item.SellIn > 0)
                     {
-                        if (item.Name != "Sulfuras, Hand of Ragnaros")
-                        {
-                            item.Quality = item.Quality - 1;
-                        }
+                        ModifyItemQuality(item, -1 * modifier);
                     }
-                }
-                else
-                {
-                    if (item.Quality < 50)
+                    
+                    if (item.SellIn <= 0)
                     {
-                        item.Quality = item.Quality + 1;
-
-                        if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (item.SellIn < 11)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    item.Quality = item.Quality + 1;
-                                }
-                            }
-
-                            if (item.SellIn < 6)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    item.Quality = item.Quality + 1;
-                                }
-                            }
-                        }
+                        ModifyItemQuality(item, -2 * modifier);
                     }
-                }
 
-                if (item.Name != "Sulfuras, Hand of Ragnaros")
-                {
                     item.SellIn = item.SellIn - 1;
                 }
 
-                if (item.SellIn < 0)
+                if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
-                    if (item.Name != "Aged Brie")
+                    if (item.SellIn > 10)
                     {
-                        if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (item.Quality > 0)
-                            {
-                                if (item.Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    item.Quality = item.Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            item.Quality = item.Quality - item.Quality;
-                        }
+                        ModifyItemQuality(item, 1);
                     }
-                    else
+
+                    if (item.SellIn > 5 && item.SellIn < 11)
                     {
-                        if (item.Quality < 50)
-                        {
-                            item.Quality = item.Quality + 1;
-                        }
+                        ModifyItemQuality(item, 2);
                     }
+
+                    if (item.SellIn < 6)
+                    {
+                        ModifyItemQuality(item, 3);
+                    }
+
+                    if (item.SellIn <= 0)
+                    {
+                        ModifyItemQuality(item, -item.Quality);
+                    }
+
+                    item.SellIn = item.SellIn - 1;
                 }
             }
         }
